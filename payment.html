@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payment | World of Cigar</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+body{
+background:#111;
+color:white;
+font-family:Arial,sans-serif;
+margin:0;
+padding:20px;
+}
+
+.payment-box{
+max-width:700px;
+margin:40px auto;
+background:#1b1b1b;
+padding:30px;
+border-radius:12px;
+border:1px solid gold;
+}
+
+h1{
+text-align:center;
+color:gold;
+margin-bottom:30px;
+}
+
+input,textarea{
+width:100%;
+padding:12px;
+margin-top:10px;
+margin-bottom:20px;
+background:#222;
+color:white;
+border:1px solid #555;
+border-radius:8px;
+font-size:16px;
+}
+
+button{
+width:100%;
+padding:15px;
+background:gold;
+color:black;
+font-size:18px;
+font-weight:bold;
+border:none;
+border-radius:8px;
+cursor:pointer;
+margin-top:15px;
+}
+
+button:hover{
+background:#f3d56b;
+}
+
+#paymentInfo{
+display:none;
+margin-top:30px;
+background:#222;
+padding:20px;
+border-radius:10px;
+}
+
+#preview{
+display:none;
+width:220px;
+margin-top:15px;
+border-radius:10px;
+border:1px solid gold;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="payment-box">
+
+<h1>Checkout</h1>
+
+<p><b>Produk :</b> <span id="productName"></span></p>
+
+<p><b>Harga :</b> Rp <span id="productPrice"></span></p>
+
+<input type="text" id="customerName" placeholder="Nama Lengkap">
+
+<input type="text" id="customerPhone" placeholder="Nomor WhatsApp">
+
+<textarea id="customerAddress" placeholder="Alamat Lengkap"></textarea>
+
+<label><b>Upload Bukti Transfer</b></label>
+
+<input type="file" id="paymentProof" accept="image/*">
+
+<img id="preview">
+
+<button onclick="showPayment()">
+Continue
+</button>
+
+<div id="paymentInfo">
+
+<h2 style="color:gold;">Payment Information</h2>
+
+<p><b>Bank :</b> BCA</p>
+
+<p><b>No. Rekening :</b> 3350016898</p>
+
+<p><b>Atas Nama :</b> NURHIDAYAH</p>
+
+<button onclick="sendWhatsapp()">
+Saya Sudah Transfer
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+const params=new URLSearchParams(window.location.search);
+
+const product=params.get("name");
+const price=params.get("price");
+
+document.getElementById("productName").textContent=product;
+document.getElementById("productPrice").textContent=Number(price).toLocaleString("id-ID");
+
+document.getElementById("paymentProof").addEventListener("change",function(){
+
+const file=this.files[0];
+
+if(file){
+
+const reader=new FileReader();
+
+reader.onload=function(e){
+
+const img=document.getElementById("preview");
+
+img.src=e.target.result;
+
+img.style.display="block";
+
+}
+
+reader.readAsDataURL(file);
+
+}
+
+});
+
+function showPayment(){
+
+document.getElementById("paymentInfo").style.display="block";
+
+}
+
+function sendWhatsapp(){
+
+const nama=document.getElementById("customerName").value;
+const hp=document.getElementById("customerPhone").value;
+const alamat=document.getElementById("customerAddress").value;
+
+const pesan=`Halo World of Cigar.
+
+Saya sudah melakukan pembayaran.
+
+Produk : ${product}
+
+Harga : Rp ${Number(price).toLocaleString("id-ID")}
+
+Nama : ${nama}
+
+WhatsApp : ${hp}
+
+Alamat : ${alamat}
+
+Saya akan mengirim bukti transfer melalui WhatsApp.`;
+
+alert("Setelah WhatsApp terbuka, silakan lampirkan foto bukti transfer sebelum mengirim pesan.");
+
+window.open("https://wa.me/628388959306?text="+encodeURIComponent(pesan));
+
+}
+
+</script>
+
+</body>
+</html>
