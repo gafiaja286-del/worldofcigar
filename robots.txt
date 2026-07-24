@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://gafiaja286-del.github.io/worldofcigar/sitemap.xml
